@@ -6,20 +6,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 fun main(){
-/**
- * YANLIŞ KULLANIM
- * runBlocking {
-            launch {
-                val downloadedName= downloadName()
-                println("$downloadedName")
-            }
-            launch {
-                val downloadedAge= downloadAge()
-                println("$downloadedAge")
-            }
-
-
-        }*/
 
     var userName=""
     var userAge=0
@@ -48,7 +34,7 @@ fun main(){
 
 suspend fun downloadName():String{
     delay(2000)
-    val userName="Atil"
+    val userName="Umit"
     println("username download")
     return userName
 }
