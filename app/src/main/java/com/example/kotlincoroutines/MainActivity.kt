@@ -2,6 +2,7 @@ package com.example.kotlincoroutines
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity() {
@@ -72,7 +73,7 @@ class MainActivity : AppCompatActivity() {
          *
          */
 
-        runBlocking {
+       /** runBlocking {
             launch(Dispatchers.Main) {
                 println("Thread:  ${Thread.currentThread().name} ")
             }
@@ -91,6 +92,27 @@ class MainActivity : AppCompatActivity() {
                     println("Thread:  ${Thread.currentThread().name} ")
                 }
 
+        }*/
+        val handler= CoroutineExceptionHandler { coroutineContext, throwable ->
+           println("Error: ${throwable.localizedMessage}")
+       }
+
+        lifecycleScope.launch(handler) {
+            supervisorScope {
+                //Supervisor scope gözlemleyici scope'dur.
+                //birden fazla launchda bir hata yüzünden diğer launchların çalışmama hatasını çözer
+                launch {
+                    throw Exception("Error")
+                }
+                launch {
+                    delay(500L)
+                    println("this is executed")
+                }
+            }
+
+        }
+        CoroutineScope(Dispatchers.Main + handler).launch {
+            throw Exception("Error")
         }
 
 
